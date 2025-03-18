@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Modulo | Main Page</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+        />
+        <style>
+th:first-of-type {
+  border-top-left-radius: var(--bulma-control-radius);
+}
+th:last-of-type {
+  border-top-right-radius: var(--bulma-control-radius);
+}
+tr:last-of-type td:first-of-type {
+  border-bottom-left-radius: var(--bulma-control-radius);
+}
+tr:last-of-type td:last-of-type {
+  border-bottom-right-radius: var(--bulma-control-radius);
+}
+
+input { appearance: none; }
+
+td :has(input:checked) ::after {
+    content: "✔️";
+}
+        </style>
+    </head>
+    <body>
+        <section class="section">
+            <div class="container card">
+                <div class="card-content">
+                    <p class="title is-5">You</p>
+                    {% if err %} <p> Error: {{err}} </p> {% endif %}
+                    {% if curr_user %}
+                        <p>
+                            You are logged in as user
+                            <b>{{curr_user['id']}}</b>.
+                        </p>
+                        <br />
+                        <button class="button" onclick="statusModal()">Choose status</button>
+                        <button
+                            class="button"
+                            onclick="javascript:alert('Sorry, scramble anonymity not implemented yet')"
+                        >
+                            Scramble anonymity
+                        </button>
+                        <button
+                            class="button"
+                            onclick="javascript:alert('Sorry, log out not implemented yet')"
+                        >
+                            Log out
+                        </button>
+                    {% else %}
+                        <a class="button" href="/login">Log in</a>
+                    {% endif %}
+                </div>
+            </div>
+            <br />
+            <div class="container">
+                <h1 class="title">Everyone on this website</h1>
+                <div class="grid">
+                    {% for user in users %}
+                    <div class="cell card">
+                        <div class="card-content">
+                            <p class="title is-4">
+                                User {{user['anon_id']}}
+                            </p>
+                            <div class="content">
+                                is feeling <b>{{user['status']}}</b> today!
+                                <br />
+                                <time>{{user['last_updated']}}</time>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        <div id="status-modal" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <section class="modal-card-body">
+                    <div class="container is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
+                        <p class="title is-4">Choose status</a>
+                        <table class="table is-bordered">
+                            <tbody>
+                                {% for s1 in allowed_statuses %}
+                                    <tr>
+                                        {% for s in s1 %}
+                                            <td>
+                                                <button onclick="submitStatus('{{s}}')";>{{s}}</button>
+                                            </td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <form id="hidden-form" method="POST">
+                            <input id="status" name="status" value="nothing" type="hidden">
+                        </form>
+                    </div>
+                </section>
+            </div>
+            <button class="modal-close is-large" aria-label="close" onclick="collapseStatusModal()"></button>
+        </div>
+    </body>
+    <script>
+        function statusModal() {
+            document.getElementById('status-modal').classList.add('is-active');
+        }
+        function collapseStatusModal() {
+            document.getElementById('status-modal').classList.remove('is-active');
+        }
+        function submitStatus(s) {
+            document.getElementById('status').value = s;
+            document.getElementById('hidden-form').submit();
+        }
+    </script>
+</html>

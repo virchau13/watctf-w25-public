@@ -1,0 +1,1 @@
+send TCP packets character by character, it will reject on bad characters, use this as a pseudo-timing attack

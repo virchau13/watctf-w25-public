@@ -1,0 +1,6 @@
+__pycache__/
+target/
+a.out
+venv/
+node_modules/
+*.zip

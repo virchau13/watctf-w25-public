@@ -1,0 +1,74 @@
+services:
+  2e-3e-4e:
+    build: 2e-3e-4e/
+    privileged: true
+    ports: 
+    - "2340:5000"
+  a-shell-casino:
+    build: a-shell-casino/
+    privileged: true
+    ports: 
+    - "5156:5000"
+  intro-pwn:
+    build: 
+      context: intro-pwn/prob/
+      args:
+        flag: watctf{those_wh0_kn0w_skull_emoj1_as9df8s9af}
+    privileged: true
+    ports: 
+    - "9833:5000"
+  precise-equality:
+    build: precise-equality/
+    privileged: true
+    ports: 
+    - "1729:5000"
+  alice-and-bob-alice: &alice-and-bob
+    build: &builddef
+      context: alice-and-bob/
+      args:
+        user: Alice
+    privileged: true
+    ports:
+    - "41133:5000"
+  alice-and-bob-bob:
+    <<: *alice-and-bob
+    build:
+      <<: *builddef
+      args:
+        user: Bob
+    ports:
+    - "41134:5000"
+  server-side-rendering:
+    build: 
+      context: server-side-rendering/
+      args:
+        flag: watctf{when_you_c0nfus3_th3_cl13nt_f0r_th3_s3rv3r_bad_things_happen}
+    ports: 
+    - "3819:3000"
+  those-who-rev:
+    build: those-who-rev/
+    privileged: true
+    ports: 
+    - "7393:5000"
+  hex-editor-xtended:
+    build: hex-editor-xtended/
+    ports:
+    - "8022:22"
+    - "8998:8080"
+  works-modulo-security:
+    build: 
+      context: works-modulo-security/
+      args:
+        flag: watctf{m0dulus_f4ns_wh3n_you_show_th3m_gcd}
+    ports:
+    - "8118:5000"
+  goose-intern-portal:
+    build: 
+      context: goose-intern-portal/
+      args:
+        flag: watctf{these_jwt_keys_g07_m3_c0nfu53d_12345}
+    ports:
+    - "8778:5000"
+secrets:
+  intro_pwn_flag:
+    file: ./intro-pwn/flag.txt
